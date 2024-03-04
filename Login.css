@@ -27,7 +27,7 @@ body {
 }
 
 .screen {
-    background: linear-gradient(90deg, #e98635, #118825);
+    background: linear-gradient(90deg, #e98635, #e98635);
     position: relative;
     height: 600px;
     width: 360px;
@@ -86,7 +86,7 @@ body {
 .screen__background__shape4 {
     height: 400px;
     width: 200px;
-    background: #118825;
+    background: #e98635;
     top: 420px;
     right: 50px;
     border-radius: 60px;
@@ -124,7 +124,6 @@ body {
 .login__input:focus,
 .login__input:hover {
     outline: none;
-    border-bottom-color: #6A679E;
 }
 
 .login__submit {
@@ -162,21 +161,5 @@ body {
 #utd_image_container {
     text-align: center;
     position: relative;
-}
-
-#utd_image_container:after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    height: 200%;
-    width: 1px;
-    background: #f00;
-}
-
-#utd_image_container>.first {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100px;
-    background: #bada55;
+    left: -10%;
 }
