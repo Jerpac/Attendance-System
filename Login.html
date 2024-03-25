@@ -2,6 +2,8 @@
 
 <head>
     <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="Login.js"></script>
 </head>
 <link rel="stylesheet" type="text/css" href="Login.css">
 
@@ -17,11 +19,11 @@
                 <form class="login">
                     <div class="login__field">
                         <i class="login__icon fas fa-user"></i>
-                        <input type="text" class="login__input" placeholder="UTD NetID">
+                        <input id="user_input" type="text" class="login__input" placeholder="UTD NetID">
                     </div>
                     <div class="login__field">
                         <i class="login__icon fas fa-lock"></i>
-                        <input type="password" class="login__input" placeholder="Password">
+                        <input id="pass_input" type="password" class="login__input" placeholder="Password">
                     </div>
                     <button id="login_button" class="button login__submit">
                         <span class="button__text">Login</span>
@@ -37,8 +39,6 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="Login.js"></script>
 </body>
 
 </html>
