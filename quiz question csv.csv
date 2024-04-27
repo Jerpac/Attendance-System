@@ -1,0 +1,11 @@
+quiz question csv
+
+courseID = 4045
+
+QuestionID	QuestionContent	Answer1	Answer2	Answer3	Answer4	CorrectAnswer
+1	"What is the capital of France?"	Berlin	Paris	Rome	Athens	answer2	 
+2	"What color is the sky?"	Blue	Green	Red	Yellow	answer1
+3	"How many legs does a spider have?"	2	4	6	8	answer4
+4	"What is the capital of the United States?"	"New York City"	"Washington, D.C."	"Los Angeles"	"Chicago"	answer2
+5	"What is the capital of Japan?"	"Beijing"	"Tokyo"	"Seoul"	"Bangkok"	answer2
+6	"True or False: The Earth is flat."	True	False	"N/A"	"N/A"	answer2
