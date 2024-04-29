@@ -3,6 +3,7 @@
     "configurations": [
         {
             "type": "java",
+<<<<<<< Updated upstream
             "name": "MainMenu",
             "request": "launch",
             "mainClass": "MainMenu",
@@ -28,6 +29,12 @@
             "request": "launch",
             "mainClass": "MainMenu",
             "vmArgs": "--module-path C:/Users/jerpa/OneDrive/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml"
+=======
+            "name": "JavaFX App",
+            "request": "launch",
+            "mainClass": "AttendanceApp",
+            "vmArgs": "--module-path C:/Users/jerpa/OneDrive/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml"
+>>>>>>> Stashed changes
         }
     ]
 }
