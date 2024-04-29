@@ -1,46 +1,60 @@
 $(document).ready(function () {
-
-    console.log('Hello World')
-    user_from_db =
-        { "username": "1234567890", "password": "WHOOSH" }
-    var keys = Object.keys(user_from_db);
-    var values = Object.values(user_from_db);
-
-
+    //code for when login button is clicked
     $("#login_button").click(function () {
-        var url = "Attendance.html";
-        //$(location).attr('href', url);
-        var username = $("#user_input").val();
-        var password = $('#pass_input').val();
-
-        if (username == values[0] && password == values[1]) {
-            $(location).attr('href', url);
-        } else {
-            alert('Wrong User Credentials!');
-        }
-
-        //if () {
-        //console.log('yah')
-        //} else {
-        //console.log('no')
-        //}
-
-        //start of AJAX demo
-        /*
-       univ_fact_url = 'http://universities.hipolabs.com/search?country=United+States'
-       $.ajax({
-           url: univ_fact_url,
-           type: 'GET',
-           data: [],
-           success: function (data) {
-               console.log(data[0])
-           },
-           error: function (result) {
-               console.log('not worked');
-           }
-       });
-       */
-
-        event.preventDefault();
+        // Make AJAX request to Servlet
+        $.ajax({
+            url: '/myservlet', // URL of your Servlet
+            type: 'GET', // Request type
+            dataType: 'json', // Expected data type of response
+            success: function (data) {
+                // Process response data
+                console.log(data);
+                // Display data in the webpage as needed
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('Error:', error);
+            }
+        });
     });
 });
+
+
+
+//start of original code
+
+/*
+$(document).ready(function () {
+
+    //code for when login button is clicked
+    $("#login_button").click(function () {
+        // Get the values from the input fields
+        var username = $("#user_input").val();
+        var password = $('#pass_input').val();
+        const url = 'https://jsonplaceholder.typicode.com/posts';
+
+        //AJAX Syntax (one way)
+        /*
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (result) {
+
+            },
+            error: function (result) {
+
+            }
+        });
+        // end of ajax comment
+
+        $.get(url, function (data, status) {
+            console.log(data[0]);
+        });
+
+        event.preventDefault();
+
+    });
+
+
+});
+*/

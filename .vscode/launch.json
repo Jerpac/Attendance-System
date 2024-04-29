@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MainMenu",
+            "request": "launch",
+            "mainClass": "MainMenu",
+            "projectName": "Attendance-System_64251223"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.app.App",
+            "projectName": "app"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "AttendanceApp",
+            "vmArgs": "--module-path C:/Users/jerpa/OneDrive/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "MainMenu",
+            "vmArgs": "--module-path C:/Users/jerpa/OneDrive/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml"
+        }
+    ]
+}
