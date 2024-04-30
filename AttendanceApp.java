@@ -75,8 +75,14 @@ public class AttendanceApp extends Application {
         Menu viewMenu = new Menu("View");
         viewMenu.getItems().add(createTableToggleMenuItem("Toggle between Students and Quiz Questions"));
 
+        Menu tableMenu = new Menu("Table");
+        tableMenu.getItems().add(createResetAttendanceMenuItem("Reset Attendance"));
+        tableMenu.getItems().add(createLockInAttendanceMenuItem("Lock In Attendance"));
+        tableMenu.getItems().add(createUpdateTableMenuItem("Update Table from Database"));
+
         menuBar.getMenus().add(fileMenu);
         menuBar.getMenus().add(viewMenu);
+        menuBar.getMenus().add(tableMenu);
         return menuBar;
     }
 
@@ -95,6 +101,24 @@ public class AttendanceApp extends Application {
     private MenuItem createTableToggleMenuItem(String title) {
         MenuItem menuItem = new MenuItem(title);
         menuItem.setOnAction(e -> toggleTable());
+        return menuItem;
+    }
+
+    private MenuItem createUpdateTableMenuItem(String title) {
+        MenuItem menuItem = new MenuItem(title);
+        menuItem.setOnAction(e -> refreshTables());
+        return menuItem;
+    }
+
+    private MenuItem createResetAttendanceMenuItem(String title) {
+        MenuItem menuItem = new MenuItem(title);
+        menuItem.setOnAction(e -> resetAttendance());
+        return menuItem;
+    }
+
+    private MenuItem createLockInAttendanceMenuItem(String title) {
+        MenuItem menuItem = new MenuItem(title);
+        menuItem.setOnAction(e -> lockInAttendance());
         return menuItem;
     }
 
@@ -186,6 +210,17 @@ public class AttendanceApp extends Application {
         } catch (SQLException e) {
             showErrorDialog("Failed to load quiz questions from database: " + e.getMessage());
         }
+    }
+
+    // Function to refresh the table information after the user selects the refresh button
+    private void refreshTables() {
+        loadStudentsFromDatabase();
+        updateStudnetAnalytics();
+        setupStudentTableClickEvent();
+
+        loadQuizQuestionsFromDatabase();
+        updateQuizAnalytics();
+        System.out.println("Tables refreshed");
     }
 
     // Builds the table for student view 
@@ -315,6 +350,14 @@ public class AttendanceApp extends Application {
         }
     }
 
+    private void resetAttendance() {
+        for (Student s : studentList) {
+            s.setStatus("Absent");
+        }
+        studentTableView.refresh();
+        updateStudnetAnalytics();
+    }
+
     // Add this method to setup the click event for the student table
     private void setupStudentTableClickEvent() {
         studentTableView.setOnMouseClicked(this::clickStudent);
@@ -349,4 +392,59 @@ public class AttendanceApp extends Application {
             showErrorDialog("Failed to save the file: " + e.getMessage());
         }
     }
+
+    private void lockInAttendance() {
+        // Prompt user for "Are you sure you want to lock in attendance?"
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Lock In Attendance");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to lock in attendance?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() != ButtonType.OK) {
+            return;
+        }
+        // @TODO: Update the database with the attendance status
+        // for now we will just print the attendance status to the console
+        for (Student s : studentList) {
+            uploadStudentAttendance(Integer.parseInt(s.getStudentId()), s.getStatus(), 1);
+        }
+
+    }
+
+    private boolean uploadStudentAttendance(int studentID, String status, int classID) {
+        // Check if student is in the class in student_in_classes table
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM student_in_classes WHERE studentID = ? AND classID = ?")) {
+            stmt.setInt(1, studentID);
+            stmt.setInt(2, classID);
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                showErrorDialog("Student is not in the class");
+                return false;
+            }
+        } catch (SQLException e) {
+            showErrorDialog("Failed to check if student is in the class: " + e.getMessage());
+            return false;
+        }
+
+        // If status is 1 (present) or 0 (absent), increment timesPresent or timesAbsent
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement stmt = conn.prepareStatement("UPDATE student_in_classes SET timesPresent = timesPresent + ?, timesAbsent = timesAbsent + ? WHERE studentID = ? AND classID = ?")) {
+            if ("Present".equals(status)) {
+                stmt.setInt(1, 1);
+                stmt.setInt(2, 0);
+            } else {
+                stmt.setInt(1, 0);
+                stmt.setInt(2, 1);
+            }
+            stmt.setInt(3, studentID);
+            stmt.setInt(4, classID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            showErrorDialog("Failed to update student attendance: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
 }
