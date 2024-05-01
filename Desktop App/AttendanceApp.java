@@ -54,9 +54,8 @@ public class AttendanceApp extends Application {
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().addAll(
-            createMenuItem("Load Student Roster...", true),
-            createMenuItem("Load Attendance...", false)
-        );
+                createMenuItem("Load Student Roster...", true),
+                createMenuItem("Load Attendance...", false));
         menuBar.getMenus().add(fileMenu);
         return menuBar;
     }
@@ -69,7 +68,8 @@ public class AttendanceApp extends Application {
 
     private HBox setupAnalyticsPanel() {
         HBox analyticsPanel = new HBox(10);
-        analyticsPanel.getChildren().addAll(totalStudentsLabel, presentStudentsLabel, absentStudentsLabel, attendanceRateLabel);
+        analyticsPanel.getChildren().addAll(totalStudentsLabel, presentStudentsLabel, absentStudentsLabel,
+                attendanceRateLabel);
         return analyticsPanel;
     }
 
@@ -85,9 +85,9 @@ public class AttendanceApp extends Application {
     private void loadCsvData(File file, boolean isRoster) {
         try {
             List<Student> data = Files.lines(file.toPath(), CSV_CHARSET)
-                .skip(1)
-                .map(this::parseStudent)
-                .collect(Collectors.toList());
+                    .skip(1)
+                    .map(this::parseStudent)
+                    .collect(Collectors.toList());
 
             if (isRoster) {
                 processRoster(data);
