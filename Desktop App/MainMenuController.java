@@ -1,25 +1,55 @@
+import java.util.Optional;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
 
 public class MainMenuController {
-
     @FXML
-    private Pane bottomPane;
+    private GridPane classesPane; // This should match the fx:id of your Pane in the FXML file
+    private int currentRow = 0;
+    private int currentCol = 0;
 
-    @FXML
-    private void addClassButtonClicked() {
-        // Ensure bottomPane is not null before accessing its children
-        if (bottomPane != null) {
-            // Create a new button
-            Button newButton = new Button("Course Section");
+    // Method to add a button dynamically
+    public void addNewClassButton() {
+        TextInputDialog dialog = new TextInputDialog("Class Section");
+        dialog.setTitle("Add new course");
+        dialog.setHeaderText("Enter the Course Section:");
+        dialog.setContentText("Course:");
 
-            // Customize the new button as needed
-            newButton.setPrefSize(179.0, 62.0); // Set preferred size
-            newButton.setFont(new javafx.scene.text.Font("Calibri", 24.0)); // Set font
+        // Show the dialog and wait for user input
+        Optional<String> result = dialog.showAndWait();
 
-            // Add the new button to the bottomPane
-            bottomPane.getChildren().add(newButton);
-        }
+        // If the user entered text, create the new button with the entered text
+        result.ifPresent(text -> {
+            System.out.println("Code update with text: " + text);
+            Button newClassButton = new Button(text);
+            newClassButton.setStyle("-fx-font:24 Calibri");
+            newClassButton.setPrefWidth(200);
+            newClassButton.setPrefHeight(200);
+
+            // Add the new button to the grid pane at the current row and column
+            classesPane.add(newClassButton, currentCol, currentRow);
+
+            // Increment the current column
+            currentCol++;
+
+            // Check if we need to move to the next row
+            if (currentCol >= 7) {
+                currentCol = 0; // Reset column count
+                currentRow++; // Move to the next row
+            }
+        });
     }
+
+    // Method to handle the button click event
+    @FXML
+    private void handleAaddNewClassButton() {
+        System.out.println("yeah");
+        addNewClassButton();
+    }
+
+    // Your other controller methods
 }
