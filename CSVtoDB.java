@@ -13,8 +13,9 @@ public class CSVtoDB
     public static void main(String[] args) 
     {
         // Change to allow user to input CSV file path (filechooser)
-        String csvPath = "src/main/quiz question csv.csv";
+        // String csvPath = "src/main/quiz question csv.csv";
         // String csvPath = "src/main/Sample-CS1000-Coursebook.csv";
+        String csvPath = "src/main/Sample-CS1000-eLearning.csv";
         
 
         Connection cnSQL;
@@ -43,13 +44,18 @@ public class CSVtoDB
     public static boolean fullUploadFromPath(String filepath, Connection cnSQL) {
         List<List<String>> records = csvToList(filepath);
         String csvType = identifyCSV(records.get(0)).toLowerCase();
-        if (csvType.equals("coursebook") || csvType.equals("eLearning")) {
+        if (csvType.toLowerCase().equals("coursebook") || csvType.toLowerCase().equals("elearning")) {
             List<Student> studentList = new ArrayList<>();
             for (List<String> record : records.subList(1, records.size())) {
                 Student student = parseStudent(record, csvType);
                 if (student != null) {
                     studentList.add(student);
                 }
+            }
+
+            System.out.println("Uploading students from list: ");
+            for (Student s : studentList) {
+                System.out.println(s);
             }
 
             if (uploadStudentsFromList(studentList, cnSQL)) {
@@ -145,6 +151,7 @@ public class CSVtoDB
             // Loop through each row
             while ((nextRecord = csvReader.readNext()) != null) {
                 List<String> record = new ArrayList<>();
+                System.out.println(Arrays.toString(nextRecord));
                 // Loop through each cell in the row
                 for (String cell : nextRecord) {
                     // if cell contains \t, is a coursebook record
@@ -159,7 +166,9 @@ public class CSVtoDB
                     // if cell doesn't contain \t, is an eLearning record
                     } else {
                         // replace quotes with empty string
-                        record.add(cell.replaceAll("\"", ""));
+                        // replace all null characters with empty string
+                        // replace "U+FFFD : REPLACEMENT CHARACTER" with empty string
+                        record.add(cell.replaceAll("\"", "").replaceAll("\0", "").replaceAll("\uFFFD", ""));
                     }
                 }
                 // Check if the record is only 1 cell, is a non-value header
@@ -236,6 +245,9 @@ public class CSVtoDB
         int studentId = Integer.parseInt(s.getStudentId());
         String studentFirstName = s.getFirstName();
         String studentLastName = s.getLastName();
+        System.out.println("Student ID: " + studentId);
+        System.out.println("Student First Name: " + studentFirstName);
+        System.out.println("Student Last Name: " + studentLastName);
 
         try {
             String insertQuery = "INSERT INTO student (studentID, studentFName, studentLName) VALUES (?, ?, ?)";
