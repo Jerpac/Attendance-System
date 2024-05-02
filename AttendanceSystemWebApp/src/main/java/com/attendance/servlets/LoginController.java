@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,14 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Student> studentList = new ArrayList<>(); // list where student data will be inserted after being read from the databse
 		String idString = request.getParameter("student-id");
 		int id = Integer.parseInt(idString); // id entered by the user from the login form
 		String password = request.getParameter("password-input"); // password entered by the user from login form
 		response.setContentType("text/html");
 		boolean matchFound = false;
+		boolean classFound = false;
+		ResultSet studentResults = null;
+		ResultSet classResults = null;
 		
 		// load the driver (MAKE SURE YOU ADD THE MYSQL-CONNECTOR.JAR FILE TO YOUR CLASSPATH
 		try {
@@ -48,26 +51,40 @@ public class LoginController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Connection cnSQL;
-		String strSql;
+		Connection connection;
 		PreparedStatement statement;
-		String strdata;
 
 		// establish the connection
 		try {
-			cnSQL = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendancedatabase",
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/attendancesystem",
 					"root", "MDouglas2kay");
-			statement = cnSQL.prepareStatement("SELECT * FROM student WHERE studentID=?");
+			
+			// query the student table to see if the student is registered in the database
+			statement = connection.prepareStatement("SELECT * FROM student WHERE studentID=?");
 			statement.setInt(1, id);
-			ResultSet results = statement.executeQuery();
-			matchFound = results.next();
+			studentResults = statement.executeQuery();
+			matchFound = studentResults.next();
+			
+			// query the class table to find the correct password for the class
+			statement = connection.prepareStatement("SELECT * FROM class WHERE quizPassword=?");
+			statement.setString(1, password);
+			classResults = statement.executeQuery();
+			classFound = classResults.next();
 		} catch (Exception ex) {
 			System.out.println("Error: " + ex.getMessage());
 		}
 		
-		if (matchFound) {
-			response.sendRedirect("attendance.jsp");
-		} else {
+		// student has been identified and password has been authenticated
+		if (matchFound && classFound) {
+			// grab the class id from the class row and send it to the quiz controller
+			try {
+				int classId = classResults.getInt("class-id");
+				response.sendRedirect("QuizController?classId=" + classId);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else { // send back an error message to display to the user
 			request.setAttribute("errorMessage", "Invalid ID or password.");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
 			dispatcher.forward(request, response);

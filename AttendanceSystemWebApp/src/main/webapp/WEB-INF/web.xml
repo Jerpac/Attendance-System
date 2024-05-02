@@ -19,4 +19,14 @@
     <servlet-name>LoginController</servlet-name>
     <url-pattern>/LoginController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>QuizController</display-name>
+    <servlet-name>QuizController</servlet-name>
+    <servlet-class>com.attendance.servlets.QuizController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QuizController</servlet-name>
+    <url-pattern>/QuizController</url-pattern>
+  </servlet-mapping>
 </web-app>
