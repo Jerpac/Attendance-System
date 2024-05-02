@@ -51,6 +51,4 @@ public class MainMenuController {
         System.out.println("yeah");
         addNewClassButton();
     }
-
-    // Your other controller methods
 }
