@@ -8,7 +8,6 @@ import java.sql.*;
  */
 public class App {
     public static void main(String[] args) {
-        System.out.println("It works here");
         Connection cnSQL;
         String strSql;
         Statement stmtSQL;
