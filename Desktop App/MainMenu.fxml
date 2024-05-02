@@ -5,22 +5,22 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.GridPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" style="-fx-background-color: #e9edf8;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller ="MainMenuController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1200.0" style="-fx-background-color: #f2f0eb;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainMenuController">
    <top>
-      <Pane prefHeight="120.0" prefWidth="1273.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+      <Pane prefHeight="120.0" prefWidth="1166.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="120.0" fitWidth="206.0" pickOnBounds="true">
+            <ImageView fitHeight="178.0" fitWidth="244.0" layoutX="7.0" layoutY="-25.0" pickOnBounds="true">
                <image>
-                  <Image url="@../utd_logo.png" />
+                  <Image url="@utd_logo.png" />
                </image>
             </ImageView>
-            <Label layoutX="456.0" layoutY="31.0" prefHeight="60.0" prefWidth="361.0" text="Your Course Sections">
+            <Label layoutX="287.0" layoutY="78.0" prefHeight="42.0" prefWidth="452.0" style="-fx-text-fill: gray;" text="Welcome back, Professor">
                <font>
-                  <Font name="Calibri" size="42.0" />
+                  <Font name="Calibri" size="36" />
                </font>
             </Label>
          </children>
@@ -29,15 +29,19 @@
    <bottom>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button onAction="#addNewClassButton" layoutX="1063.0" layoutY="100.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="179.0" text="Add Class">
+            <Button layoutX="934.0" layoutY="100.0" mnemonicParsing="false" onAction="#addNewClassButton" prefHeight="91.0" prefWidth="220.0" text="Add Class">
                <font>
-                  <Font name="Calibri" size="24.0" />
+                  <Font name="Calibri" size="35.0" />
                </font>
+               <style>
+                  -fx-background-color: transparent;
+                  -fx-cursor: hand;
+               </style>
             </Button>
          </children>
       </Pane>
    </bottom>
    <center>
-      <GridPane fx:id = "classesPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <GridPane fx:id="classesPane" prefHeight="200.0" prefWidth="200.0" style="-fx-padding: 35px;" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

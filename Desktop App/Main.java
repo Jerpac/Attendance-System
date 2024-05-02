@@ -12,8 +12,12 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
 
         // Set up the primary stage
-        primaryStage.setTitle("FXML Example");
-        primaryStage.setScene(new Scene(root, 1300, 900));
+        primaryStage.setTitle("UTD Attendance System");
+        primaryStage.setScene(new Scene(root, 1200, 950));
+        primaryStage.setMinWidth(1200);
+        primaryStage.setMinHeight(950);
+        primaryStage.setMaxWidth(1200);
+        primaryStage.setMaxHeight(950);
         primaryStage.show();
     }
 

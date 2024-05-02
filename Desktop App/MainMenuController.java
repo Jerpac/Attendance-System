@@ -24,12 +24,13 @@ public class MainMenuController {
 
         // If the user entered text, create the new button with the entered text
         result.ifPresent(text -> {
-            System.out.println("Code update with text: " + text);
             Button newClassButton = new Button(text);
-            newClassButton.setStyle("-fx-font:24 Calibri");
-            newClassButton.setPrefWidth(200);
-            newClassButton.setPrefHeight(200);
+            newClassButton.setStyle("-fx-font:24 Calibri; -fx-cursor: hand; -fx-background-color: #f2dc9b;");
+            newClassButton.setPrefWidth(250);
+            newClassButton.setPrefHeight(250);
 
+            classesPane.setHgap(35); // Horizontal gap
+            classesPane.setVgap(35); // Vertical gap
             // Add the new button to the grid pane at the current row and column
             classesPane.add(newClassButton, currentCol, currentRow);
 
@@ -37,7 +38,7 @@ public class MainMenuController {
             currentCol++;
 
             // Check if we need to move to the next row
-            if (currentCol >= 7) {
+            if (currentCol >= 4) {
                 currentCol = 0; // Reset column count
                 currentRow++; // Move to the next row
             }
