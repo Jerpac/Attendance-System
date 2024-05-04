@@ -45,18 +45,18 @@ section {
 }
 
 .radio__input {
-	display: none;
+	
 }
 
-input[name="radioButton1"]:checked+.radio__label {
+input[name="question1"]:checked+.radio__label {
 	background-color: #ec7524;
 }
 
-input[name="radioButton2"]:checked+.radio__label {
+input[name="question2"]:checked+.radio__label {
 	background-color: #ec7524;
 }
 
-input[name="radioButton3"]:checked+.radio__label {
+input[name="question3"]:checked+.radio__label {
 	background-color: #ec7524;
 }
 

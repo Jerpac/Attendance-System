@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -41,6 +43,7 @@ public class LoginController extends HttpServlet {
 		response.setContentType("text/html");
 		boolean matchFound = false;
 		boolean classFound = false;
+		boolean isAvailable = true;
 		ResultSet studentResults = null;
 		ResultSet classResults = null;
 		
@@ -76,14 +79,31 @@ public class LoginController extends HttpServlet {
 		
 		// student has been identified and password has been authenticated
 		if (matchFound && classFound) {
-			// grab the class id from the class row and send it to the quiz controller
+			HttpSession session = request.getSession();
+			session.setAttribute("studentId", id);
 			try {
-				int classId = classResults.getInt("class-id");
-				response.sendRedirect("QuizController?classId=" + classId);
+				isAvailable = classResults.getBoolean("quiz_is_open");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			// check if the quiz is available
+			if (isAvailable) {
+				try {
+					int classId = classResults.getInt("class-id");
+					session.setAttribute("classId", classId);
+					response.sendRedirect("QuizController?classId=" + classId);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			// if unavailable, display error message to the user
+			} else {
+				request.setAttribute("errorMessage", "Quiz is unavailable.");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+				dispatcher.forward(request, response);
+			}
+			
 		} else { // send back an error message to display to the user
 			request.setAttribute("errorMessage", "Invalid ID or password.");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");

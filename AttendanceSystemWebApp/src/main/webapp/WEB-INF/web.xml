@@ -29,4 +29,14 @@
     <servlet-name>QuizController</servlet-name>
     <url-pattern>/QuizController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>QuizSubmitter</display-name>
+    <servlet-name>QuizSubmitter</servlet-name>
+    <servlet-class>com.attendance.servlets.QuizSubmitter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QuizSubmitter</servlet-name>
+    <url-pattern>/QuizSubmitter</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -39,6 +39,7 @@ public class QuizController extends HttpServlet {
 		
 		// send the required info back to the attendance.jsp for viewing
 		request.setAttribute("questions", selectedQuestions);
+		
 		RequestDispatcher dispatchQuestions = request.getRequestDispatcher("attendance.jsp");
 		dispatchQuestions.forward(request, response);
 	}
@@ -67,12 +68,13 @@ public class QuizController extends HttpServlet {
 			
 			// take the selected rows and create QuizQuestion objects and put them in a list
 			while (classQuestions.next()) {
+				int questionId = classQuestions.getInt("questionID");
 				String question = classQuestions.getString("questionContent");
 				String answer1 = classQuestions.getString("answer1");
 				String answer2 = classQuestions.getString("answer2");
 				String answer3 = classQuestions.getString("answer3");
 				String answer4 = classQuestions.getString("answer4");
-				QuizQuestion quizQuestion = new QuizQuestion(question, answer1, answer2, answer3, answer4);
+				QuizQuestion quizQuestion = new QuizQuestion(questionId, question, answer1, answer2, answer3, answer4);
 				questions.add(quizQuestion);
 			}
 		} catch (SQLException e) {
@@ -83,6 +85,7 @@ public class QuizController extends HttpServlet {
 		return questions;
 	}
 	
+	// shuffles the quiz bank and then gets a sublist of three questions for randomness
 	private List<QuizQuestion> selectQuestions(List<QuizQuestion> quizQuestions) {
 		Collections.shuffle(quizQuestions);
 		List<QuizQuestion> selectedQuestions = quizQuestions.subList(0,  3);
